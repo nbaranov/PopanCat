@@ -28,8 +28,8 @@ def startBrowser():
     else:
         hide = webdriver.ChromeOptions()
         hide.headless = True
-        #driver = webdriver.Chrome(executable_path='./moduls/chromedriver', options=hide)
-        driver = webdriver.Chrome(executable_path='./moduls/chromedriver') #wisible browser for test        
+        driver = webdriver.Chrome(executable_path='./moduls/chromedriver', options=hide)
+        #driver = webdriver.Chrome(executable_path='./moduls/chromedriver') #wisible browser for test        
     return driver
 
 
