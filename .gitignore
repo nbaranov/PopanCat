@@ -1,4 +1,7 @@
 moduls/secret.py
 
-__pycache__
+moduls/__pycache__/
 
+matches/*.pkl
+
+history.log
