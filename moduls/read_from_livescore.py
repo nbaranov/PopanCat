@@ -99,6 +99,7 @@ def html_to_dict(html):
                                 "kx": float(match[7].span.text),
                                 "kw2": float(match[8].span.text)
                                 })
+        matches = sorted(matches, key=lambda x: x['time'])
         return matches
     except:
         time.sleep(2)
