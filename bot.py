@@ -40,13 +40,11 @@ def bot():
 
     @bot.message_handler(commands=['press'])
     def handle_start_help(message):
-        hour = startHour()
-        matches_dict = load_obj('today')
+        hour, day = startHour()
+        matches_dict = load_obj(day)
         popmatches = returnMatchesForPopanchik(matches_dict, hour, MINKF, MAXKF)
-        if len(popmatches) < 3:
-            matches_dict = load_obj('tomorrow')
-            msg = 'Матчи на завтра\n'
-            popmatches = returnMatchesForPopanchik(matches_dict, hour, MINKF, MAXKF)
+        if day == 'tomorrow':
+            msg = 'На сегодня с матчами туго, давай посмотрим матчи на завтра\n'
         else:
             msg = str()
         popanpress = popanchik(popmatches)
