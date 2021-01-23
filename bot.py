@@ -44,9 +44,10 @@ def bot():
         matches_dict = load_obj(day)
         popmatches = returnMatchesForPopanchik(matches_dict, hour, MINKF, MAXKF)
         if day == 'tomorrow':
-            msg = 'На сегодня с матчами туго, давай посмотрим матчи на завтра\n'
+            msg = f'На сегодня с матчами туго, давай посмотрим матчи на завтра\n\
+Всего "попанских" матчей: {len(popmatches)}\n'
         else:
-            msg = str()
+            msg = f'Всего "попанских" матчей на сегодня {len(popmatches)}\n'
         popanpress = popanchik(popmatches)
         if message.chat.username == None:
             name = f'name {message.chat.first_name} {message.chat.last_name}'
@@ -55,7 +56,6 @@ def bot():
         if len(popanpress) < 1:
             msg += ('Возможно произошла ошибка при загрузке матчей, она повторяется каждые 10 минут')
         elif len(popanpress) > 1:
-            msg += ('Всего "попанских" матчей на сегодня {len(popmatches)}\n')
             msg += ("Прессы от Попанчика:\n")
             count = 0
             for press in popanpress:
@@ -64,7 +64,6 @@ def bot():
                 for i in press:
                     msg += (f'{i} \n')
         else:
-            msg += (f'Всего "попанских" матчей на сегодня {len(popmatches)}\n')
             msg += ("Пресс от Попанчика:\n\n")
             for press in popanpress:
                 for i in press:
@@ -81,15 +80,13 @@ def bot():
 
     @bot.message_handler(commands=['matches'])
     def handle_start_help(message):
-        hour = startHour()
-        matches_dict = load_obj('today')
+        hour, day = startHour()
+        matches_dict = load_obj(day)
         popmatches = returnMatchesForPopanchik(matches_dict, hour, MINKF, MAXKF)
-        if len(popmatches) == 0:
-            matches_dict = load_obj('tomorrow')
-            popmatches = returnMatchesForPopanchik(matches_dict, hour, MINKF, MAXKF)
-            msg = 'Все "попанcкие" матчи на завтра всего их {len(popmatches)}, выбирай любой и грузи хату!\n\n'    
+        if day == 'tomorrow':
+            msg = 'Все "попанcкие" матчи на завтра. \nВсего их {len(popmatches)}, выбирай любой и грузи хату!\n\n'    
         else:
-            msg = (f'Все "попанcкие" матчи на сегодня всего их {len(popmatches)}, выбирай любой и грузи хату!\n\n')
+            msg = (f'Все "попанcкие" матчи на сегодня. Всего их {len(popmatches)}, выбирай любой и грузи хату!\n\n')
         if message.chat.username == None:
             name = f'name {message.chat.first_name} {message.chat.last_name}'
         else:

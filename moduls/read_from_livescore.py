@@ -5,6 +5,7 @@ import pickle
 import time
 import re
 import sys
+import os
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
@@ -18,15 +19,23 @@ def load_obj(name):
     with open('matches_obj/' + name + '.pkl', 'rb') as f:
         return pickle.load(f)
 
+def startBrowser():
+    if os.name == "nt":
+        hide = webdriver.ChromeOptions()
+        hide.headless = True
+        driver = webdriver.Chrome(executable_path="./moduls/chromedriver.exe", options=hide)
+        #driver = webdriver.Chrome(executable_path="./moduls/chromedriver.exe")
+    else:
+        hide = webdriver.ChromeOptions()
+        hide.headless = True
+        #driver = webdriver.Chrome(executable_path='./moduls/chromedriver', options=hide)
+        driver = webdriver.Chrome(executable_path='./moduls/chromedriver') #wisible browser for test        
+    return driver
+
+
 def load_matches():
 
-    options = webdriver.ChromeOptions()
-    options.add_argument('headless')
-    options.add_argument('window-size=1920x1080')
-    options.add_argument("disable-gpu")
-    driver = webdriver.Chrome("./moduls/chromedriver", chrome_options=options)
-    #driver = webdriver.Chrome("./moduls/chromedriver")
-
+    driver = startBrowser()
     driver.get("https://www.livescore.in/ru/")
     time.sleep(2)
     tabs = driver.find_elements_by_class_name("tabs__tab")
@@ -95,5 +104,3 @@ def html_to_dict(html):
         time.sleep(2)
         #print("не удалось записать")
         return html_to_dict(html) 
-
-load_matches()
