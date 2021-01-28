@@ -2,6 +2,6 @@ moduls/secret.py
 
 moduls/__pycache__/
 
-matches/*.pkl
+matches/
 
 history.log
