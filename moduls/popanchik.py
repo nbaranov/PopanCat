@@ -50,7 +50,7 @@ def popanchik(popmatches):
 
     #print(f'''Найден{ends(len(popmatches), "", "о", "о")} \
 #{len(popmatches)} матч{ends(len(popmatches), "", "а", "ей")} для Попанчика ''')
-    if len(popmatches) > 3:
+    if len(popmatches) > 2:
         for _ in range(amt_preses):
             press = getPopanPress(popmatches)
             if press == None: continue

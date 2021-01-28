@@ -8,7 +8,7 @@ import random
 from time import asctime 
 
 from telebot import TeleBot
-from moduls.secret import token
+from moduls.secret import TOKEN
 from moduls.popanchik import popanchik
 from moduls.popanchik import returnMatchesForPopanchik
 from moduls.read_from_livescore import load_obj

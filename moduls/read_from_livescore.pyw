@@ -111,3 +111,5 @@ def html_to_dict(html):
         time.sleep(2)
         #print("не удалось записать")
         return html_to_dict(html) 
+
+load_matches()
