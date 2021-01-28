@@ -49,7 +49,7 @@ def bot():
         else:
             msg = f'Всего "попанских" матчей на сегодня {len(popmatches)}\n'
         popanpress = popanchik(popmatches)
-        if message.chat.username == None:
+        if message.chat.username is None:
             name = f'name {message.chat.first_name} {message.chat.last_name}'
         else:
             name = f'username {message.chat.username}'    
@@ -84,10 +84,10 @@ def bot():
         matches_dict = load_obj(day)
         popmatches = returnMatchesForPopanchik(matches_dict, hour, MINKF, MAXKF)
         if day == 'tomorrow':
-            msg = 'Все "попанcкие" матчи на завтра. \nВсего их {len(popmatches)}, выбирай любой и грузи хату!\n\n'    
+            msg = (f'Все "попанcкие" матчи на завтра. \nВсего их {len(popmatches)}, выбирай любой и грузи хату!\n\n')
         else:
             msg = (f'Все "попанcкие" матчи на сегодня. Всего их {len(popmatches)}, выбирай любой и грузи хату!\n\n')
-        if message.chat.username == None:
+        if message.chat.username is None:
             name = f'name {message.chat.first_name} {message.chat.last_name}'
         else:
             name = f'username {message.chat.username}'
