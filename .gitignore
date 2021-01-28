@@ -2,6 +2,8 @@ moduls/secret.py
 
 moduls/__pycache__/
 
-matches/
+matches_obj/*.pkl
 
 history.log
+
+.vscode
