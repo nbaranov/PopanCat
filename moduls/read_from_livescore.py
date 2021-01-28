@@ -34,8 +34,8 @@ def startBrowser():
         hide.add_argument('--headless')
         hide.add_argument('--log-level=3')
         hide.add_experimental_option('excludeSwitches', ['enable-logging'])
-        #driver = webdriver.Chrome(executable_path='./moduls/chromedriver', options=hide)
-        driver = webdriver.Chrome(executable_path='./moduls/chromedriver') #wisible browser for test        
+        driver = webdriver.Chrome(executable_path='./moduls/chromedriver', options=hide)
+        #driver = webdriver.Chrome(executable_path='./moduls/chromedriver') #wisible browser for test        
     return driver
 
 
@@ -111,5 +111,3 @@ def html_to_dict(html):
         time.sleep(2)
         #print("не удалось записать")
         return html_to_dict(html) 
-
-load_matches()
