@@ -10,6 +10,7 @@ from telebot import TeleBot
 from moduls.secret import TOKEN
 from moduls.popanchik import popan_press_bot
 from moduls.popanchik import popan_list_bot
+from moduls.popanchik import contest_press_bot
 from moduls.popanchik import returnMatchesForPopanchik
 from moduls.start_hour import startHour
 
@@ -45,7 +46,7 @@ def bot():
 
 
     @bot.message_handler(commands=['press'])
-    def handle_start_help(message):
+    def popan_press(message):
         
         msg, press = popan_press_bot()
         bot.reply_to(message, msg)
@@ -59,8 +60,24 @@ def bot():
         log(msg + "\n")
 
 
+    @bot.message_handler(commands=['contest'])
+    def contest_press(message):
+
+        msg, press = contest_press_bot()
+        bot.reply_to(message, msg)
+
+        name = get_name(message)
+
+        log(f'{asctime()} {name} спросил КОНКУРСНЫЙ пресс\n')
+        msg = str()
+        for line in press:
+            msg += line + '\n'
+        log(msg + "\n")
+
+
+
     @bot.message_handler(commands=['matches'])
-    def handle_start_help(message):
+    def matches_list(message):
 
         msg = popan_list_bot()
         bot.reply_to(message, msg)

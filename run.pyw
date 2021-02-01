@@ -12,11 +12,8 @@ def loader():
     while True:
         try:
             load_matches()
-            time.time()
-            #print('all okay', str(time.asctime()))
             time.sleep(600)
         except:
-            #print('not okay', str(time.asctime()))
             time.sleep(5)
 
 run_bot = Thread(target=bot)
