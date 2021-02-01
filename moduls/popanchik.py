@@ -3,6 +3,7 @@
 
 import random
 import re
+import time
 from moduls.start_hour import startHour
 from moduls.read_from_livescore import load_obj
 
@@ -100,6 +101,31 @@ def popan_list_bot():
     msg += ('\nПоддержка и благодарность:\nhttps://vk.com/app6887721_-93234960\n\n\
 И заглядывай к нам в группу в ВК:\nvk.com/probitybets\n\n')
     return msg
+
+
+def contest_press_bot():
+    if str(time.asctime())[:3] == "Sat":
+        msg =  'Сегодня уже суббота. Давай дождемся результатов сегодняшнего конкурса и потом начнем новый.'
+        return msg, []
+    day = 'contest'
+    hour = 0
+    matches_dict = load_obj(day)
+    popmatches = returnMatchesForPopanchik(matches_dict, hour, MINKF, MAXKF)
+    msg = f'Всего "попанских" матчей на конкурс: {len(popmatches)}\n\n'
+    if len(popmatches) >= 3:
+        press = getPopanPress(popmatches)
+        if len(press) < 1:
+            msg += ('Возможно произошла ошибка при загрузке матчей, она повторяется каждые 10 минут')
+        else:
+            msg += ("Пресс для конкурса:\n\n")
+            for i in press:
+                msg += (f'{i} \n')
+    else: msg = f'Сейчас с матчами совсем туго. Загляни попозже, может кефы изменятся и я что-то подберу\n\n'
+        
+    msg += ('\nНе забудь написать пресс в комментарии в группе:\nhttps://vk.com/probitybets\n\n')
+
+    return msg, press
+
 
 amt_preses = 1
 usedmatches = []

@@ -44,21 +44,36 @@ def load_matches():
     driver = startBrowser()
  
     while True:
-        try:
+#        try:
             driver.get("https://www.livescore.in/ru/")
-            time.sleep(2)
+            time.sleep(1)
             tabs = driver.find_elements_by_class_name("tabs__tab")
             tabs[3].click()
-            time.sleep(7)
-            today = driver.page_source
-            save_obj(html_to_dict(today), 'today')
+            time.sleep(2)
+            #today = driver.page_source
+            #save_obj(html_to_dict(today), 'today')
             calend = driver.find_elements_by_class_name("calendar__nav")
             calend[1].click()
             time.sleep(7)
-            tomorrow = driver.page_source
-            save_obj(html_to_dict(tomorrow), 'tomorrow')
+            #tomorrow = driver.page_source
+            #save_obj(html_to_dict(tomorrow), 'tomorrow')
+            calend = driver.find_element_by_class_name("calendar__datepicker")
+            calend.click()
+            time.sleep(2)
+            days = driver.find_elements_by_class_name("day")
+            if days[0].text[-2:] == days[-1].text[-2:] == 'Сб':
+                days[7].click()
+            else:       
+                days.reverse() 
+                for day in days:
+                    if day.text[-2:] == 'Сб':
+                        day.click()
+                        break
+            time.sleep(7)
+            contest = driver.page_source
+            save_obj(html_to_dict(contest), 'contest')
             break
-        except:
+#        except:
             continue
 
     driver.close()
