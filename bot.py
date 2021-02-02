@@ -14,7 +14,7 @@ from moduls.popanchik import contest_press_bot
 from moduls.popanchik import returnMatchesForPopanchik
 from moduls.start_hour import startHour
 
-def log(msg):
+def log(file, msg):
     with open('history.log', 'a', encoding='UTF-8') as file:
         file.write(msg)
 
@@ -53,11 +53,11 @@ def bot():
 
         name = get_name(message)
 
-        log(f'{asctime()} {name} спросил пресс\n')
+        log('history.log', f'{asctime()} {name} спросил пресс\n')
         msg = str()
         for line in press:
             msg += line + '\n'
-        log(msg + "\n")
+        log('history.log', msg + "\n")
 
 
     @bot.message_handler(commands=['contest'])
@@ -68,11 +68,11 @@ def bot():
 
         name = get_name(message)
 
-        log(f'{asctime()} {name} спросил КОНКУРСНЫЙ пресс\n')
+        log('contest.log', f'{asctime()} {name} спросил КОНКУРСНЫЙ пресс\n')
         msg = str()
         for line in press:
             msg += line + '\n'
-        log(msg + "\n")
+        log('contest.log', msg + "\n")
 
 
 
@@ -83,7 +83,7 @@ def bot():
         bot.reply_to(message, msg)
 
         name = get_name(message)
-        log(f'{asctime()} {name} спросил список матчей\n')
+        log('history.log', f'{asctime()} {name} спросил список матчей\n')
 
 
     bot.polling()

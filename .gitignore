@@ -1,9 +1,14 @@
+#file with token
 moduls/secret.py
 
+#cache
 moduls/__pycache__/
 
+#files with dicts
 matches_obj/*.pkl
 
+#logs
 history.log
+contest.log
 
 .vscode
