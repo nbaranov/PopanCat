@@ -23,19 +23,21 @@ def startBrowser():
     if os.name == "nt":
         hide = webdriver.ChromeOptions()
         hide.headless = True
-        #hide.add_argument('--headless')
+        hide.add_argument('--headless')
         hide.add_argument('--log-level=3')
-        #hide.add_experimental_option('excludeSwitches', ['enable-logging'])
+        hide.add_experimental_option('excludeSwitches', ['enable-logging'])
         driver = webdriver.Chrome(executable_path="./moduls/chromedriver.exe", options=hide)
         #driver = webdriver.Chrome(executable_path="./moduls/chromedriver.exe")
+        driver.set_window_size(1024,900)
     else:
         hide = webdriver.ChromeOptions()
         hide.headless = True
-        #hide.add_argument('--headless')
+        hide.add_argument('--headless')
         hide.add_argument('--log-level=3')
-        #hide.add_experimental_option('excludeSwitches', ['enable-logging'])
+        hide.add_experimental_option('excludeSwitches', ['enable-logging'])
         driver = webdriver.Chrome(executable_path='./moduls/chromedriver', options=hide)
-        #driver = webdriver.Chrome(executable_path='./moduls/chromedriver') #wisible browser for test        
+        #driver = webdriver.Chrome(executable_path='./moduls/chromedriver') #wisible browser for test
+        driver.set_window_size(1024,900)        
     return driver
 
 
@@ -52,6 +54,9 @@ def load_matches():
             time.sleep(2)
             today = driver.page_source
             save_obj(html_to_dict(today), 'today')
+            button = driver.find_element_by_id('onetrust-accept-btn-handler')
+            button.click()
+            time.sleep(2)
             calend = driver.find_elements_by_class_name("calendar__nav")
             calend[1].click()
             time.sleep(7)
@@ -68,8 +73,9 @@ def load_matches():
                 for day in days:
                     if day.text[-2:] == 'Сб':
                         day.click()
+                        time.sleep(2)
                         break
-            time.sleep(7)
+            time.sleep(4)
             contest = driver.page_source
             save_obj(html_to_dict(contest), 'contest')
             break
@@ -126,3 +132,5 @@ def html_to_dict(html):
         time.sleep(2)
         #print("не удалось записать")
         return html_to_dict(html) 
+
+load_matches()
