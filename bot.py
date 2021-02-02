@@ -15,7 +15,7 @@ from moduls.popanchik import returnMatchesForPopanchik
 from moduls.start_hour import startHour
 
 def log(file, msg):
-    with open('history.log', 'a', encoding='UTF-8') as file:
+    with open(file, 'a', encoding='UTF-8') as file:
         file.write(msg)
 
 def get_name(message):

@@ -23,17 +23,17 @@ def startBrowser():
     if os.name == "nt":
         hide = webdriver.ChromeOptions()
         hide.headless = True
-        hide.add_argument('--headless')
+        #hide.add_argument('--headless')
         hide.add_argument('--log-level=3')
-        hide.add_experimental_option('excludeSwitches', ['enable-logging'])
+        #hide.add_experimental_option('excludeSwitches', ['enable-logging'])
         driver = webdriver.Chrome(executable_path="./moduls/chromedriver.exe", options=hide)
         #driver = webdriver.Chrome(executable_path="./moduls/chromedriver.exe")
     else:
         hide = webdriver.ChromeOptions()
         hide.headless = True
-        hide.add_argument('--headless')
+        #hide.add_argument('--headless')
         hide.add_argument('--log-level=3')
-        hide.add_experimental_option('excludeSwitches', ['enable-logging'])
+        #hide.add_experimental_option('excludeSwitches', ['enable-logging'])
         driver = webdriver.Chrome(executable_path='./moduls/chromedriver', options=hide)
         #driver = webdriver.Chrome(executable_path='./moduls/chromedriver') #wisible browser for test        
     return driver
@@ -59,7 +59,7 @@ def load_matches():
             save_obj(html_to_dict(tomorrow), 'tomorrow')
             calend = driver.find_element_by_class_name("calendar__datepicker")
             calend.click()
-            time.sleep(2)
+            time.sleep(5)
             days = driver.find_elements_by_class_name("day")
             if days[0].text[-2:] == days[-1].text[-2:] == 'Сб':
                 days[7].click()
