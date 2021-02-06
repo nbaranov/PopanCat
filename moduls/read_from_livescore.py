@@ -25,10 +25,10 @@ def startBrowser():
         hide.headless = True
         hide.add_argument('--headless')
         hide.add_argument('--log-level=3')
-        hide.add_experimental_option('excludeSwitches', ['enable-logging'])
+        #hide.add_experimental_option('excludeSwitches', ['enable-logging'])
         driver = webdriver.Chrome(executable_path="./moduls/chromedriver.exe", options=hide)
         #driver = webdriver.Chrome(executable_path="./moduls/chromedriver.exe")
-        driver.set_window_size(1024,900)
+        driver.set_window_size(1280,1024)
     else:
         hide = webdriver.ChromeOptions()
         hide.headless = True

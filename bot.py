@@ -31,7 +31,8 @@ def bot():
     @bot.message_handler(commands=['start', 'help'])
     def handle_start_help(message):
         bot.reply_to(message, f'Привет {message.chat.first_name}\nЯ Пробити Кот и я могу дать тебе попанский пресс или список всех попанских матчей на сегодня\
-для этого  напиши команду /press или /matches.')
+для этого  напиши команду /press или /matches.\n\
+Для участия в конкурсе напиши команду /contest')
 
     # Обрабатывается голосовые сообщения
     @bot.message_handler(content_types=['voice'])
