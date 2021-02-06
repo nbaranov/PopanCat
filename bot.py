@@ -86,5 +86,15 @@ def bot():
         name = get_name(message)
         log('history.log', f'{asctime()} {name} спросил список матчей\n')
 
+    # Обрабатывается текстовые  сообщения
+    @bot.message_handler(content_types=['text'])
+    def handle_voice(message):
+        bot.reply_to(message, f'Извини, {message.chat.first_name}, но я пока не могу свободно общаться.\n\
+Чтобы получить прогнозы или список матчей нужно вводить команды:\n\
+/press - чтобы получить случайный попанский экспресс\n\n\
+/matches - чтобы получить список всех попанский матчей\n\n\
+/contest - чтобы получить экспресс для конкурса\
+')
+
 
     bot.polling()
