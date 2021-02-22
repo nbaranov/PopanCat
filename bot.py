@@ -48,13 +48,12 @@ def bot():
 
     @bot.message_handler(commands=['press'])
     def popan_press(message):
-        
+        name = get_name(message)
+        log('history.log', f'{asctime()} {name} спросил пресс\n')        
         msg, press = popan_press_bot()
         bot.reply_to(message, msg)
 
-        name = get_name(message)
-
-        log('history.log', f'{asctime()} {name} спросил пресс\n')
+        log('history.log', f'{asctime()} пресс отправлен\n')
         msg = str()
         for line in press:
             msg += line + '\n'
@@ -63,13 +62,12 @@ def bot():
 
     @bot.message_handler(commands=['contest'])
     def contest_press(message):
-
+        name = get_name(message)
+        log('contest.log', f'{asctime()} {name} спросил КОНКУРСНЫЙ пресс\n')
         msg, press = contest_press_bot()
         bot.reply_to(message, msg)
 
-        name = get_name(message)
-
-        log('contest.log', f'{asctime()} {name} спросил КОНКУРСНЫЙ пресс\n')
+        log('contest.log', f'{asctime()} пресс выдан\n')
         msg = str()
         for line in press:
             msg += line + '\n'
@@ -79,12 +77,12 @@ def bot():
 
     @bot.message_handler(commands=['matches'])
     def matches_list(message):
-
+        name = get_name(message)
+        log('history.log', f'{asctime()} спросил список матчей\n')
         msg = popan_list_bot()
         bot.reply_to(message, msg)
-
         name = get_name(message)
-        log('history.log', f'{asctime()} {name} спросил список матчей\n')
+        log('history.log', f'{asctime()} список выдан\n')
 
     # Обрабатывается текстовые  сообщения
     @bot.message_handler(content_types=['text'])

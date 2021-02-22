@@ -12,12 +12,22 @@ from selenium.webdriver.support.ui import WebDriverWait
 from bs4 import BeautifulSoup as bs
 
 def save_obj(obj, name):
-    with open('matches_obj/' + name + '.pkl', 'wb') as f:
-        pickle.dump(obj, f, pickle.HIGHEST_PROTOCOL)
+    try:
+        with open('matches_obj/' + name + '.pkl', 'wb') as f:
+            pickle.dump(obj, f, pickle.HIGHEST_PROTOCOL)
+    except:
+        time.sleep(0.7)
+        save_obj(obj, name)
+
 
 def load_obj(name):
-    with open('matches_obj/' + name + '.pkl', 'rb') as f:
-        return pickle.load(f)
+    try:
+        with open('matches_obj/' + name + '.pkl', 'rb') as f:
+            return pickle.load(f)
+    except:
+        time.sleep(0.5)
+        load_obj(name)
+
 
 def startBrowser():
     if os.name == "nt":
@@ -25,7 +35,7 @@ def startBrowser():
         hide.headless = True
         hide.add_argument('--headless')
         hide.add_argument('--log-level=3')
-        #hide.add_experimental_option('excludeSwitches', ['enable-logging'])
+        hide.add_experimental_option('excludeSwitches', ['enable-logging'])
         driver = webdriver.Chrome(executable_path="./moduls/chromedriver.exe", options=hide)
         #driver = webdriver.Chrome(executable_path="./moduls/chromedriver.exe")
         driver.set_window_size(1280,1024)
@@ -132,5 +142,3 @@ def html_to_dict(html):
         time.sleep(2)
         #print("не удалось записать")
         return html_to_dict(html) 
-
-load_matches()

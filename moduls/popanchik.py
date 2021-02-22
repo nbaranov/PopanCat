@@ -29,7 +29,7 @@ def getPopanPress(popanmatches):
     a = 0
     ligth_press = random.randint(2,3)
     if ligth_press > (len(popanmatches) - len(usedmatches)):
-        return None
+        return []
 
     while a < ligth_press:
         i = random.randint(0, len(popanmatches) - 1)
@@ -46,6 +46,7 @@ def getPopanPress(popanmatches):
                 coef *= popanmatches[i]["kw2"]
 
     press.append(f"Итоговый кф {round(coef, 2)}")
+    usedmatches.clear()
     return press
 
 def get_popan_matches_list():

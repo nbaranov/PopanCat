@@ -12,9 +12,9 @@ def loader():
     while True:
         try:
             load_matches()
-            time.sleep(600)
+            time.sleep(1000)
         except:
-            time.sleep(5)
+            time.sleep(1)
 
 run_bot = Thread(target=bot)
 run_bot.start()
