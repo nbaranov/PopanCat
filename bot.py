@@ -78,11 +78,11 @@ def bot():
     @bot.message_handler(commands=['matches'])
     def matches_list(message):
         name = get_name(message)
-        log('history.log', f'{asctime()} спросил список матчей\n')
+        log('history.log', f'{asctime()} {name} спросил список матчей\n')
         msg = popan_list_bot()
         bot.reply_to(message, msg)
         name = get_name(message)
-        log('history.log', f'{asctime()} список выдан\n')
+        log('history.log', f'{asctime()} список для {name} выдан\n')
 
     # Обрабатывается текстовые  сообщения
     @bot.message_handler(content_types=['text'])
@@ -94,7 +94,7 @@ def bot():
 /contest - чтобы получить экспресс для конкурса')
 
         name = get_name(message)
-        log('history.log', f'{asctime()} {name} написал какую-то херню\n')
+        log('history.log', f'{asctime()} {name} написал:\n {message.text}\n\n')
 
 
 
