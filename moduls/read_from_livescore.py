@@ -3,12 +3,12 @@
 
 import pickle
 import time
+import requests
 import re
 import sys
 import os
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support.ui import WebDriverWait
+
+
 from bs4 import BeautifulSoup as bs
 
 def save_obj(obj, name):
@@ -16,7 +16,7 @@ def save_obj(obj, name):
         with open('matches_obj/' + name + '.pkl', 'wb') as f:
             pickle.dump(obj, f, pickle.HIGHEST_PROTOCOL)
     except:
-        time.sleep(0.7)
+        time.sleep(0.1)
         save_obj(obj, name)
 
 
@@ -25,120 +25,78 @@ def load_obj(name):
         with open('matches_obj/' + name + '.pkl', 'rb') as f:
             return pickle.load(f)
     except:
-        time.sleep(0.5)
+        time.sleep(0.1)
         load_obj(name)
 
 
-def startBrowser():
-    if os.name == "nt":
-        hide = webdriver.ChromeOptions()
-        hide.headless = True
-        hide.add_argument('--headless')
-        hide.add_argument('--log-level=3')
-        hide.add_experimental_option('excludeSwitches', ['enable-logging'])
-        driver = webdriver.Chrome(executable_path="./moduls/chromedriver.exe", options=hide)
-        #driver = webdriver.Chrome(executable_path="./moduls/chromedriver.exe")
-        driver.set_window_size(1280,1024)
-    else:
-        hide = webdriver.ChromeOptions()
-        hide.headless = True
-        hide.add_argument('--headless')
-        hide.add_argument('--log-level=3')
-        hide.add_experimental_option('excludeSwitches', ['enable-logging'])
-        driver = webdriver.Chrome(executable_path='./moduls/chromedriver', options=hide)
-        #driver = webdriver.Chrome(executable_path='./moduls/chromedriver') #wisible browser for test
-        driver.set_window_size(1024,900)        
-    return driver
-
 
 def load_matches():
-
-    driver = startBrowser()
  
     while True:
         try:
-            driver.get("https://www.livescore.in/ru/")
-            time.sleep(1)
-            tabs = driver.find_elements_by_class_name("tabs__tab")
-            tabs[3].click()
-            time.sleep(2)
-            today = driver.page_source
+            today = requests.get('http://m.flashscore.ru/?s=5')
+            today = today.text.replace('<br />', '\n')
             save_obj(html_to_dict(today), 'today')
-            button = driver.find_element_by_id('onetrust-accept-btn-handler')
-            button.click()
-            time.sleep(2)
-            calend = driver.find_elements_by_class_name("calendar__nav")
-            calend[1].click()
-            time.sleep(7)
-            tomorrow = driver.page_source
+            
+            tomorrow = requests.get('http://m.flashscore.ru/?d=1&s=5')
+            tomorrow = tomorrow.text.replace('<br />', '\n')
             save_obj(html_to_dict(tomorrow), 'tomorrow')
-            calend = driver.find_element_by_class_name("calendar__datepicker")
-            calend.click()
-            time.sleep(5)
-            days = driver.find_elements_by_class_name("day")
-            if days[0].text[-2:] == days[-1].text[-2:] == 'Сб':
-                days[7].click()
-            else:       
-                days.reverse() 
-                for day in days:
-                    if day.text[-2:] == 'Сб':
-                        day.click()
-                        time.sleep(2)
-                        break
-            time.sleep(4)
-            contest = driver.page_source
-            save_obj(html_to_dict(contest), 'contest')
-            break
+            
+            break            
         except:
             continue
 
-    driver.close()
 
 def html_to_dict(html):
     try:
+        # with open('livescore.html', 'r', encoding="utf-8") as doc:
+        #     html = doc.read()
         matches = []
-        atr_match = [
-            "div", 'class_="event__match event__match--scheduled event__match--oneLine"',
-            "div", 'class_="event__match event__match--scheduled event__match--last event__match--oneLine"']
-
-        table = bs(html, 'html.parser').find("div", class_="sportName soccer")
+        table = bs(html, 'html.parser').find('div', attrs={'id' : 'score-data'}).text.split('\n')
+        table[0] = table[0].split('!')[1]
+        
         for row in table:
-            if row.find("div", class_="event__titleBox"):
-                country = row.find("div", class_="event__titleBox")
-                spans = country.find_all("span")
-                country = f"{spans[0].text}: {spans[1].text}"      
-            elif row.find(atr_match):
-                match = row.find_all(atr_match)
-                if (len(match[1].text) == 5 or match[1].text[5:8] == "TKP"):
-                    try:
-                        if all([match[5].span != None,
-                            match[6].span != None,
-                            match[7].span != None]):
-                            matches.append({
-                                "country": country,
-                                "time": match[1].text,
-                                "team1": match[2].text,
-                                "team2": match[3].text,
-                                "kw1": float(match[5].span.text),
-                                "kx": float(match[6].span.text),
-                                "kw2": float(match[7].span.text)
-                                })
-                    except IndexError:
-                        if all([match[6].span != None,
-                            match[7].span != None, 
-                            match[8].span != None]):
-                            matches.append({
-                                "country": country,
-                                "time": match[1].text[:5],
-                                "team1": match[3].text,
-                                "team2": match[4].text,
-                                "kw1": float(match[6].span.text),
-                                "kx": float(match[7].span.text),
-                                "kw2": float(match[8].span.text)
-                                })
-        matches = sorted(matches, key=lambda x: x['time'])
+            if (re.match('[А-ЯЁ]{3}', row)) and ('-:-' in row) and ('Перенесен' not in row):
+                row = re.split("(\d{2}:\d{2})|(d+')", row)
+                country = row[0]
+                if ("-:-" in row[3]) and ('[' in row[3]) and (']' in row[3]):
+                    time = row[1]
+                    teams = row[3].split('-:-')[0].strip().split(' - ')
+                    team1, team2 = teams[0], teams[1]
+                    kf = row[3].split('[')[-1][:-1].split('|')
+                    matches.append({
+                        "country": country,
+                        "time": time,
+                        "team1": team1,
+                        "team2": team2,
+                        "kw1": float(kf[0].strip()),
+                        "kx": float(kf[1].strip()),
+                        "kw2": float(kf[2].strip())
+                        })
+            elif ("-:-" in row) and ('[' in row) and (']' in row) and ('Перенесен' not in row):
+                time = row[:5]
+                teams = row.split('-:-')[0][5:].strip().split(' - ')
+                team1, team2 = teams[0], teams[1]
+                kf = row.split('[')[-1][:-1].split('|')
+                matches.append({
+                    "country": country,
+                    "time": time,
+                    "team1": team1,
+                    "team2": team2,
+                    "kw1": float(kf[0].strip()),
+                    "kx": float(kf[1].strip()),
+                    "kw2": float(kf[2].strip())
+                    })
         return matches
     except:
-        time.sleep(2)
+        time.sleep(0.1)
         #print("не удалось записать")
         return html_to_dict(html) 
+
+if __name__ == '__main__':
+    load_matches()
+    matches = load_obj('today')
+    print('today \n\n', matches)
+    matches = load_obj('tomorrow')
+    print('tomorrow \n\n',matches)
+    

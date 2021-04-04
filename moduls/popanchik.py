@@ -82,7 +82,7 @@ def popan_press_bot():
                 msg += (f'{i} \n')
     else: msg = f'На сегодня и завтра с матчами совсем туго. Загляни попозже, может кефы изменятся и я что-то подберу\n\n'
         
-    msg += ('\nПоддержка и благодарность:\nhttps://vk.com/app6887721_-93234960\n\n\
+    msg += ('\nПоддержка и благодарность:\nhttps://www.tinkoff.ru/sl/76v8PDLRznk\n\n\
 И заглядывай к нам в группу в ВК:\nvk.com/probitybets\n\n')
 
     return msg, press
@@ -90,16 +90,21 @@ def popan_press_bot():
 
 def popan_list_bot():
     popmatches, day = get_popan_matches_list()
+    msg = ['']
+    i = 0
     if day == 'tomorrow':
-        msg = f'На сегодня с матчами туго, давай посмотрим матчи на завтра\n\
+        msg[i] = f'На сегодня с матчами туго, давай посмотрим матчи на завтра\n\
 Всего "попанских" матчей на завтра: {len(popmatches)}\n'
-    else: msg = f'Всего "попанских" матчей на сегодня: {len(popmatches)}\n\n'
+    else: msg[i] = f'Всего "попанских" матчей на сегодня: {len(popmatches)}\n\n'
     for ind, match in enumerate(popmatches):
         if match["kw1"] < match["kw2"]:
-            msg += (f'{ind+1}. {match["country"]} {match["time"]} {match["team1"]} - {match["team2"]} П1 кф. {match["kw1"]} \n\n')
+            msg[i] += (f'{ind+1}. {match["country"]} {match["time"]} {match["team1"]} - {match["team2"]} П1 кф. {match["kw1"]} \n\n')
         else:
-            msg += (f'{ind+1}. {match["country"]} {match["time"]} {match["team1"]} - {match["team2"]} П2 кф. {match["kw2"]} \n\n')
-    msg += ('\nПоддержка и благодарность:\nhttps://vk.com/app6887721_-93234960\n\n\
+            msg[i] += (f'{ind+1}. {match["country"]} {match["time"]} {match["team1"]} - {match["team2"]} П2 кф. {match["kw2"]} \n\n')
+        if len(msg[i]) > 3800:
+            i += 1
+            msg.append('')
+    msg[i] += ('\nПоддержка и благодарность:\nhttps://www.tinkoff.ru/sl/76v8PDLRznk\n\n\
 И заглядывай к нам в группу в ВК:\nvk.com/probitybets\n\n')
     return msg
 
@@ -130,3 +135,6 @@ def contest_press_bot():
 
 amt_preses = 1
 usedmatches = []
+
+if __name__ == '__main__':
+    print(popan_list_bot())

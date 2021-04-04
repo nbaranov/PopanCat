@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import random
-import re
 from moduls.ends import ends
 
 

@@ -31,8 +31,7 @@ def bot():
     @bot.message_handler(commands=['start', 'help'])
     def handle_start_help(message):
         bot.reply_to(message, f'Привет {message.chat.first_name}\nЯ Пробити Кот и я могу дать тебе попанский пресс или список всех попанских матчей на сегодня\
-для этого  напиши команду /press или /matches.\n\
-Для участия в конкурсе напиши команду /contest')
+для этого  напиши команду /press или /matches.\n')
 
     # Обрабатывается голосовые сообщения
     @bot.message_handler(content_types=['voice'])
@@ -60,18 +59,18 @@ def bot():
         log('history.log', msg + "\n")
 
 
-    @bot.message_handler(commands=['contest'])
-    def contest_press(message):
-        name = get_name(message)
-        log('contest.log', f'{asctime()} {name} спросил КОНКУРСНЫЙ пресс\n')
-        msg, press = contest_press_bot()
-        bot.reply_to(message, msg)
+    # @bot.message_handler(commands=['contest'])
+    # def contest_press(message):
+    #     name = get_name(message)
+    #     log('contest.log', f'{asctime()} {name} спросил КОНКУРСНЫЙ пресс\n')
+    #     msg, press = contest_press_bot()
+    #     bot.reply_to(message, msg)
 
-        log('contest.log', f'{asctime()} пресс выдан\n')
-        msg = str()
-        for line in press:
-            msg += line + '\n'
-        log('contest.log', msg + "\n")
+    #     log('contest.log', f'{asctime()} пресс выдан\n')
+    #     msg = str()
+    #     for line in press:
+    #         msg += line + '\n'
+    #     log('contest.log', msg + "\n")
 
 
 
@@ -80,18 +79,22 @@ def bot():
         name = get_name(message)
         log('history.log', f'{asctime()} {name} спросил список матчей\n')
         msg = popan_list_bot()
-        bot.reply_to(message, msg)
+        if len(msg) == 1:
+            bot.reply_to(message, msg[0])
+        else:
+            for i in range(len(msg)):
+                part = f'Часть {i+1} из {len(msg)}\n' + msg[i]
+                bot.reply_to(message, part)
         name = get_name(message)
         log('history.log', f'{asctime()} список для {name} выдан\n')
 
     # Обрабатывается текстовые  сообщения
     @bot.message_handler(content_types=['text'])
-    def handle_voice(message):
+    def handle_text(message):
         bot.reply_to(message, f'Извини, {message.chat.first_name}, но я пока не могу свободно общаться.\n\
 Чтобы получить прогнозы или список матчей нужно вводить команды:\n\
 /press - чтобы получить случайный попанский экспресс\n\n\
-/matches - чтобы получить список всех попанский матчей\n\n\
-/contest - чтобы получить экспресс для конкурса')
+/matches - чтобы получить список всех попанский матчей')
 
         name = get_name(message)
         log('history.log', f'{asctime()} {name} написал:\n {message.text}\n\n')
