@@ -16,7 +16,7 @@ def save_obj(obj, name):
         with open('matches_obj/' + name + '.pkl', 'wb') as f:
             pickle.dump(obj, f, pickle.HIGHEST_PROTOCOL)
     except:
-        time.sleep(0.1)
+        time.sleep(0.2)
         save_obj(obj, name)
 
 
@@ -25,7 +25,7 @@ def load_obj(name):
         with open('matches_obj/' + name + '.pkl', 'rb') as f:
             return pickle.load(f)
     except:
-        time.sleep(0.1)
+        time.sleep(0.3)
         load_obj(name)
 
 
@@ -89,7 +89,7 @@ def html_to_dict(html):
                     })
         return matches
     except:
-        time.sleep(0.1)
+        time.sleep(0.3)
         #print("не удалось записать")
         return html_to_dict(html) 
 
