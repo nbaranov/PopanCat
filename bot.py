@@ -101,4 +101,4 @@ def bot():
 
 
 
-    bot.polling()
+    bot.polling(interval=5, timeout=30, long_polling_timeout=40)
