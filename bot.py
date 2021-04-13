@@ -4,15 +4,20 @@
 
 
 import random
-from time import asctime 
+import os
 
+
+from time import asctime 
 from telebot import TeleBot
-from moduls.secret import TOKEN
 from moduls.popanchik import popan_press_bot
 from moduls.popanchik import popan_list_bot
 from moduls.popanchik import contest_press_bot
 from moduls.popanchik import returnMatchesForPopanchik
 from moduls.start_hour import startHour
+
+
+TOKEN = os.getenv('TOKEN')
+
 
 def log(file, msg):
     with open(file, 'a', encoding='UTF-8') as file:
