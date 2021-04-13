@@ -100,9 +100,9 @@ def popan_list_bot():
     else: msg[i] = f'Всего "попанских" матчей на сегодня: {len(popmatches)}\n\n'
     for ind, match in enumerate(popmatches):
         if match["kw1"] < match["kw2"]:
-            msg[i] += (f'{ind+1}. {match["country"]} {match["time"]} {match["team1"]} - {match["team2"]} П1 кф. {match["kw1"]} \n\n')
+            msg[i] += (f'{match["time"]} {match["country"]} {match["team1"]} - {match["team2"]} П1 кф. {match["kw1"]} \n\n')
         else:
-            msg[i] += (f'{ind+1}. {match["country"]} {match["time"]} {match["team1"]} - {match["team2"]} П2 кф. {match["kw2"]} \n\n')
+            msg[i] += (f'{match["time"]} {match["country"]} {match["team1"]} - {match["team2"]} П2 кф. {match["kw2"]} \n\n')
         if len(msg[i]) > 3800:
             i += 1
             msg.append('')
