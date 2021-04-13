@@ -54,6 +54,7 @@ def get_popan_matches_list():
     day = 'today'
     matches_dict = load_obj(day)
     popmatches = returnMatchesForPopanchik(matches_dict, hour, MINKF, MAXKF)
+    popmatches = sorted(popmatches, key=lambda k: k['time']) 
     #print(popmatches)
     #print(len(popmatches))
     if len(popmatches) < 3:
@@ -61,6 +62,7 @@ def get_popan_matches_list():
         day = 'tomorrow'
         matches_dict = load_obj(day)
         popmatches = returnMatchesForPopanchik(matches_dict, hour, MINKF, MAXKF)
+        popmatches = sorted(popmatches, key=lambda k: k['time'])
         #print(popmatches)
         #print(len(popmatches))
     return popmatches, day
@@ -137,4 +139,4 @@ amt_preses = 1
 usedmatches = []
 
 if __name__ == '__main__':
-    print(popan_list_bot())
+    pass
