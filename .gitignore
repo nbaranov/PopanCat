@@ -3,6 +3,7 @@ moduls/secret.py
 
 #cache
 moduls/__pycache__/
+__pycache__/
 
 #files with dicts
 matches_obj/*.pkl
